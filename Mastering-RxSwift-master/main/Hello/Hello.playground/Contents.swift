@@ -7,13 +7,27 @@ import RxSwift
 
 
 let disposeBag = DisposeBag()
+//
+//Observable.just("Hello, RxSwift")
+//    .subscribe{ print($0)}
+//    .disposed(by: disposeBag)
 
-Observable.just("Hello, RxSwift")
-    .subscribe{ print($0)}
+
+//var a = 1
+//var b = 2
+//
+//a + b
+//
+//a = 12
+
+let a = BehaviorSubject(value: 1)
+let b = BehaviorSubject(value: 2)
+
+Observable.combineLatest(a, b) { $0 + $1 }
+    .subscribe(onNext: { print($0) })
     .disposed(by: disposeBag)
 
-
-
+a.onNext(12) // 한번 더 계산이 된다.
 
 
 
