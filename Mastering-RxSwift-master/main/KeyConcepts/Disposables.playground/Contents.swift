@@ -42,12 +42,14 @@ let subscription1 = Observable.from([1, 2, 3])
     })
 
 subscription1.dispose() //이렇게 해지해도되지만 공식문서에 dispose bag을 이용하는 것을 권장.
+//그리고 만약 해지 안되더라도 자동으로 해지됨. 하지만 공식문서에 해주라고 나와있음.
+ 
 
 var bag = DisposeBag()
 Observable.from([1, 2, 3])
     .subscribe{
         print($0)
-    }
+    } //여기까지만해도 디스포스드가 실행안되는 것이 아니다. 자동으로 리소스들이 해지됨.
     .disposed(by: bag)
 
 
@@ -66,10 +68,12 @@ let subscription2 = Observable<Int>.interval(.seconds(1),
     }, onDisposed: {
         print("Disposed")
     })
+    //.disposed(by: bag)
 
 // 3초뒤에 모든 리소스 해지시키기
 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
     subscription2.dispose()
+    //bag = DisposeBag()
 }
 //completed메소드가 호출 안됨을 볼 수 있음.
 //이러한 이유러 dispose로 리소스를 해지하는 것은 피하는 것이 좋다.
