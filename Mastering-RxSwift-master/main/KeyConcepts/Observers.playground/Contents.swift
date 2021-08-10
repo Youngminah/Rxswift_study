@@ -26,7 +26,10 @@ import RxSwift
 /*:
  # Observers
  */
-
+//옵저버블에서 새로운 이벤트는 넥스트를 이용하여 옵저버한테 전달된다. (Emission 방출이라고 표현함)
+//옵저버블에서 에러가나면 에러이벤트가 전달된다.
+//반면, 성공적으로 전달되면 completed 이벤트가 전달된다.
+//에러, 컴플리트 모두 옵저버블의 라이프 사이클 중 가장 마지막에 전달된다.
 Observable<Int>.create { (observer) -> Disposable in
    observer.on(.next(0))
    observer.onNext(1)

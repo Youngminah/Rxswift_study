@@ -30,6 +30,7 @@ import RxSwift
 
 
 //: observer가 구독전까지는 값이 전달되지 않는다.
+// 옵저버를 구독자라고도 부른다.
 let o1 = Observable<Int>.create { (observer) -> Disposable in
     observer.on(.next(0))
     observer.onNext(1)
