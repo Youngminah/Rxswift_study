@@ -27,6 +27,9 @@ import RxSwift
 /*:
  # ReplaySubject
  */
+// ReplaySubject는 2개이상의 이벤트를 저장하고 새로운 구독자에게 전달할 수 있다.
+
+
 
 let disposeBag = DisposeBag()
 
@@ -35,3 +38,29 @@ enum MyError: Error {
 }
 
 
+let rs = ReplaySubject<Int>.create(bufferSize: 3) //3개 이벤트 저장가능
+
+
+(1...10).forEach { rs.onNext($0) }
+
+rs.subscribe { print("Observer 1>>", $0) }
+    .disposed(by: disposeBag)
+
+//버퍼에는 마지막에 저장된 3개의 이벤트만 저장되므로 8,9,10이 나올것임
+
+rs.subscribe { print("Observer 2>>", $0) }
+    .disposed(by: disposeBag)
+
+rs.onNext(11) //가장오래된 애를 삭제하고 11이 추가된것
+
+rs.subscribe { print("Observer 3>>", $0) }
+    .disposed(by: disposeBag)
+
+//rs.onCompleted()
+rs.onError(MyError.error)
+
+rs.subscribe { print("Observer 4>>", $0) }
+    .disposed(by: disposeBag)
+
+//버퍼는 메모리에 저장되기 때문에 메모리 사용량에 신경써야한다.
+//필요이상의 메모리는 쓰는것은 안좋다.
