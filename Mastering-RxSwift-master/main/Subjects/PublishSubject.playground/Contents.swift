@@ -58,7 +58,7 @@ enum MyError: Error {
 
 let subject = PublishSubject<String>()
 // - 문자열이 포함된 넥스트 이벤트를 받아서 다른 옵저버에게 전달 가능.
-// - 생성자를 전달할 때는 파라미터를 전달하지 않음. 내부에는 아무런 이벤트가 저장되어 있지 않다.
+// - 생성자를 생성할 때는 파라미터를 전달하지 않음. 내부에는 아무런 이벤트가 저장되어 있지 않다.
 // - 그래서 생성 직후에 옵저버가 구독을 시작하면 아무 이벤트도 전달하지 않는다.
 
 subject.onNext("Hello") //여기까지 하면 서브젝트를 구독하고 있는 옵저버가 없기 때문에 이벤트가 처리되지 않고 사라짐.
@@ -69,13 +69,16 @@ o1.disposed(by: disposeBag)
 // 아무 것도 출력이 안된다 왜? PublishSubject는 구독 이후에 전달되는 새로운 이벤트만 전달 할 수 있다.
 // 따라서 구독 전에 생성되었던 이벤트는 전달되지 않는다.
 
-subject.onNext("RxSwift")
+subject.onNext("0")
+
+//여기서는 출력됨. 구독이후에 전달된 이벤트이기 때문
 
 let o2 = subject.subscribe{ print(">> 2", $0) }
 o2.disposed(by: disposeBag)
 
-subject.onNext("Subject") // 두 구독자 모두 이 이벤트를 받음.
-// subject.onCompleted() // 두 구독자 모두 completed 이벤트 받음.
+subject.onNext("1")// 두 구독자 모두 이 이벤트를 받음.
+subject.onNext("2")
+//ubject.onCompleted() // 두 구독자 모두 completed 이벤트 받음.
 
 subject.onError(MyError.error)
 
@@ -83,6 +86,7 @@ subject.onError(MyError.error)
 // 에러도 마찬가지
 let o3 = subject.subscribe { print(">> 3", $0) }
 o3.disposed(by: disposeBag)
+
 
 
 // MARK: 정리 !!
