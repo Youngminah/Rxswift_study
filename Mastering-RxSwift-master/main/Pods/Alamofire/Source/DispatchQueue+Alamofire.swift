@@ -1,5 +1,7 @@
 //
-//  Copyright (c) 2019 KxCoding <kky0317@gmail.com>
+//  DispatchQueue+Alamofire.swift
+//
+//  Copyright (c) 2014 Alamofire Software Foundation (http://alamofire.org/)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -20,44 +22,16 @@
 //  THE SOFTWARE.
 //
 
-import UIKit
-import RxSwift
+import Dispatch
+import Foundation
 
-/*:
- # Observers
- */
-//옵저버블에서 새로운 이벤트는 넥스트를 이용하여 옵저버한테 전달된다. (Emission 방출이라고 표현함)
-//옵저버블에서 에러가나면 에러이벤트가 전달된다.
-//반면, 성공적으로 전달되면 completed 이벤트가 전달된다.
-//에러, 컴플리트 모두 옵저버블의 라이프 사이클 중 가장 마지막에 전달된다.
+extension DispatchQueue {
+    static var userInteractive: DispatchQueue { return DispatchQueue.global(qos: .userInteractive) }
+    static var userInitiated: DispatchQueue { return DispatchQueue.global(qos: .userInitiated) }
+    static var utility: DispatchQueue { return DispatchQueue.global(qos: .utility) }
+    static var background: DispatchQueue { return DispatchQueue.global(qos: .background) }
 
-
-Observable<Int>.create { (observer) -> Disposable in
-   observer.on(.next(0))
-   observer.onNext(1)
-   
-   observer.onCompleted()
-   
-   return Disposables.create()
+    func after(_ delay: TimeInterval, execute closure: @escaping () -> Void) {
+        asyncAfter(deadline: .now() + delay, execute: closure)
+    }
 }
-
-
-
-Observable.from([1, 2, 3])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
