@@ -34,6 +34,10 @@ Observable.from(fruits)
    .subscribe { element in print(element) }
    .disposed(by: disposeBag)
 
+//배열을 받아 하나하나 방출하는 옵저버블 생성.
+//배열에 저장된 요소를 순서대로 방출하는 옵저버블이 필요할 때 사용.
+
+
 
 
 

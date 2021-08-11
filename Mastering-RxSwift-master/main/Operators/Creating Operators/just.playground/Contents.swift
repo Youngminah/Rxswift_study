@@ -26,6 +26,8 @@ import RxSwift
 /*:
  # just
  */
+//하나의 항목을 방출하는 옵저버블 생성.
+
 
 let disposeBag = DisposeBag()
 let element = "😀"
@@ -40,7 +42,8 @@ Observable.just([1, 2, 3])
 
 
 
-
+// ⭐️from과 헷갈리지 않기!!
+// just로 생성된 옵저버블은 파라미터로 생성된 요소를 그대로 방출한다.
 
 
 

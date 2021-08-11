@@ -26,6 +26,7 @@ import RxSwift
 /*:
  # of
  */
+//두 개이상의 요소를 방출하는 옵저버블을 만들려면 just로는 안됨.
 
 let disposeBag = DisposeBag()
 let apple = "🍏"
@@ -40,7 +41,7 @@ Observable.of([1, 2], [3, 4], [5, 6])
    .subscribe { element in print(element) }
    .disposed(by: disposeBag)
 
-
+//배열은 각각 뭉땡히로 방출됨. 배열 안의 값을 하나하나 방출하고 싶다면 ? -> from
 
 
 
