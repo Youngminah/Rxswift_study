@@ -31,10 +31,19 @@ let disposeBag = DisposeBag()
 let red = "🔴"
 let blue = "🔵"
 
+Observable.generate(initialState: 0,
+                    condition: { $0 <= 10 }, //컨디션이 false라면 이벤트를 전달 안하고 completed이벤트를 바로 전달.
+                    iterate: { $0 + 2 })
+    .subscribe{ print($0) }
+    .disposed(by: disposeBag)
 
+// Generate 연산자는 파라미터 형식이 정수로 제한되지 않는다.
 
-
-
+Observable.generate(initialState: red,
+                    condition: { $0.count <= 15 }, //컨디션이 false라면 이벤트를 전달 안하고 completed이벤트를 바로 전달.
+                    iterate: { $0.count.isMultiple(of: 2) ? $0 + red : $0 + blue })
+    .subscribe{ print($0) }
+    .disposed(by: disposeBag)
 
 
 
