@@ -26,10 +26,12 @@ import RxSwift
 /*:
  # range
  */
+// 정수를 지정된 수만큼 +1씩 증가하여 방출하는 옵저버블 생성
+// 증가하는 크기를 변경하거나, 감소하는 것은 불가능 -> generate이용
 
 let disposeBag = DisposeBag()
 
-Observable.range(start: 1, count: 10)
+Observable.range(start: 1, count: 10) //반드시 정수를 전달하여야 한다!!
    .subscribe { print($0) }
    .disposed(by: disposeBag)
 
