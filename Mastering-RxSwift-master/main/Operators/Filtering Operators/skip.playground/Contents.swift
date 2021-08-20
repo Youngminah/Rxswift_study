@@ -26,9 +26,14 @@ import RxSwift
 /*:
  # skip
  */
-
+//count로 스킵하는것 인덱스가아님
 let disposeBag = DisposeBag()
 let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+Observable.from(numbers)
+    .skip(3)
+    .subscribe { print($0) }
+    .disposed(by: disposeBag)
 
 
 
