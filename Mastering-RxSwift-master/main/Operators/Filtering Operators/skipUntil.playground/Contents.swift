@@ -26,6 +26,23 @@ import RxSwift
 /*:
  # skipUntil
  */
-
 let disposeBag = DisposeBag()
+
+// 옵저버블 타입을 파라미터로 받는다.
+// 다른 옵저버블을 파라미터로 받는다.
+// 이옵저버블이 넥스트 이벤트를 전달받기 전까지 원본 옵저버블이 전달하는 이벤트를 무시한다.
+// 이러한 특징 때문에 파라미터로 전달하는 옵저버블을 트리거라고 부르기도 한다.
+
+let subject = PublishSubject<Int>()
+let trigger = PublishSubject<Int>()
+
+subject.skipUntil(trigger)
+    .subscribe{ print($0) }
+    .disposed(by: disposeBag)
+
+subject.onNext(1)
+trigger.onNext(0)
+subject.onNext(2)
+
+
 

@@ -26,8 +26,30 @@ import RxSwift
 /*:
  # single
  */
-
+//첫번째 요소만 방출하거나, 조건에 맞는 첫번째 요소만 방출한다.
+//두개 이상의 요소를 방출하려고 하면 에러 방생
 let disposeBag = DisposeBag()
 let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 
+Observable.just(1)
+    .single()
+    .subscribe{ print($0) }
+    .disposed(by: disposeBag)
+
+Observable.from(numbers)
+    .single{ $0 == 3 }
+    .subscribe{ print($0) }
+    .disposed(by: disposeBag)
+
+let subject = PublishSubject<Int>()
+
+subject.single()
+    .subscribe{ print($0) }
+    .disposed(by: disposeBag)
+
+subject.onNext(100)
+//하나의 요소를 방출했다고 해서 바로 completed가 발생하면 안된다.
+//다른요소가 방출될 수도 있기 때문.
+//그래서 single옵저버블은 원본 옵저버블에서 conpleted 이벤트를 전달할 때 까지 대기한다.
+subject.onNext(1)

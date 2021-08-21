@@ -26,6 +26,13 @@ import RxSwift
 /*:
  # skipWhile
  */
+//클로저를 파라미터로 받아 클로저를 트루로 리턴되면 스킵하고, 펄스면 방출하고 펄스 이후로는 계속 방출.
+
 
 let disposeBag = DisposeBag()
 let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+Observable.from(numbers)
+    .skipWhile{ !$0.isMultiple(of: 2) }
+    .subscribe{ print($0) }
+    .disposed(by: disposeBag)
