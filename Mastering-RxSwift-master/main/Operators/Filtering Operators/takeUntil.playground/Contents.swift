@@ -26,7 +26,22 @@ import RxSwift
 /*:
  # takeUntil
  */
+// 옵저버블을 파라미터로 받는다.
+// 파라미터로 받은 옵저버블이 넥스트 이벤트를 전달받을 때까지
+// 원본 옵저버블에서 넥스트 이벤트를 전달한다.
 
 let disposeBag = DisposeBag()
 let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+let subject = PublishSubject<Int>()
+let trigger = PublishSubject<Int>()
+
+subject.takeUntil(trigger)
+    .subscribe{ print($0) }
+    .disposed(by: disposeBag)
+
+subject.onNext(1)
+subject.onNext(2)
+trigger.onNext(0)
+subject.onNext(3)
 

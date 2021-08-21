@@ -50,8 +50,14 @@ let buttonTap = Observable<String>.create { observer in
 }
 
 
-buttonTap   
-   .subscribe { print($0) }
-   .disposed(by: disposeBag)
+buttonTap
+    .throttle(.milliseconds(1000), scheduler: MainScheduler.instance)
+    .subscribe { print($0) }
+    .disposed(by: disposeBag)
+
+//throttle, debounce 차이점
+//throttle연산자는 넥스트 이벤트를 지정된 주기마다 하나씩 방출한다.
+//debounce는 이벤트가 전달된 다음 지정된 시간까지 다음 이벤트가 전달되지 않는다면 방출.
+
 
 //: [Next](@next)

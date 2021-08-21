@@ -31,3 +31,11 @@ let disposeBag = DisposeBag()
 let numbers = [1, 1, 3, 2, 2, 3, 1, 5, 5, 7, 7, 7]
 
 
+Observable.from(numbers)
+    .distinctUntilChanged()
+    .subscribe{ print($0) }
+    .disposed(by: disposeBag)
+
+//이전과 똑같은 이벤트라면 방출하지 않는다.
+
+

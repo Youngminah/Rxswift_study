@@ -26,6 +26,8 @@ import RxSwift
 /*:
  # debounce
  */
+//debounce, throttle. 둘 다 짧은시간동안 반복적으로 방출되는 이벤트를 제어함
+
 
 let disposeBag = DisposeBag()
 
@@ -51,8 +53,12 @@ let buttonTap = Observable<String>.create { observer in
    }
 }
 
-buttonTap   
-   .subscribe { print($0) }
-   .disposed(by: disposeBag)
+buttonTap
+    //타이머 1초로 지정해줌
+    .debounce(.milliseconds(1000), scheduler: MainScheduler.instance)
+    .subscribe { print($0) }
+    .disposed(by: disposeBag)
+
+//지정된 시간동안 새로운 이벤트가 방출 되지 않으면 가장 마지막에 전달된 이벤트를 구독자에게 전달한다.
 
 
