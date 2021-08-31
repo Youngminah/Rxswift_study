@@ -26,6 +26,8 @@ import RxSwift
 /*:
  # zip
  */
+//combineLatest랑 비슷함 하지만 한번 결합된 애는 재방출 ㄴㄴ
+
 
 let bag = DisposeBag()
 
@@ -36,3 +38,19 @@ enum MyError: Error {
 let numbers = PublishSubject<Int>()
 let strings = PublishSubject<String>()
 
+Observable.zip(numbers, strings) {"\($0) - \($1)"}
+    .subscribe{ print($0) }
+    .disposed(by: bag)
+
+numbers.onNext(1)
+strings.onNext("one")
+
+
+numbers.onNext(2) // 아직 2와 결합할 짝이없어서 방출 안됨 combineLatest와의 차이점!!
+strings.onNext("two")
+
+//numbers.onCompleted()
+numbers.onError(MyError.error)
+strings.onNext("three")
+
+strings.onCompleted()

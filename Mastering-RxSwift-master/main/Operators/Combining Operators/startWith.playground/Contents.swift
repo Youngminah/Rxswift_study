@@ -26,8 +26,16 @@ import RxSwift
 /*:
  # startWith
  */
+// 옵저버블이 요소를 방출하기 전에 다른항목들을 앞에 추가
+// 기본값을 추가할때 사용
 
 let bag = DisposeBag()
 let numbers = [1, 2, 3, 4, 5]
 
+
+Observable.from(numbers)
+    .startWith(0)
+    .startWith(-1,-2)
+    .subscribe{ print($0) }
+    .disposed(by: bag)
 

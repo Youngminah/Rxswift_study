@@ -37,4 +37,28 @@ let oddNumbers = BehaviorSubject(value: 1)
 let evenNumbers = BehaviorSubject(value: 2)
 let negativeNumbers = BehaviorSubject(value: -1)
 
+//concat과 혼동하지 않기 동작방식이 다르다.
+//concat은 하나의 옵저버블이 completed된다음에 이어지는 옵저버블 방출.
+//merge는 두개이상의 옵저버블을 연결하여 하나의 옵저버블로 합쳐진다음 순서대로 방출한다.
+
+let source = Observable.of(oddNumbers, evenNumbers, negativeNumbers)
+
+source
+    //.merge()
+    .merge(maxConcurrent: 2)
+    .subscribe{ print($0) }
+    .disposed(by: bag)
+
+
+oddNumbers.onNext(3)
+evenNumbers.onNext(4)
+evenNumbers.onNext(6)
+oddNumbers.onNext(5)
+
+//oddNumbers.onCompleted() // odd는 이제 새로운 이벤트 전달 불가능 even은가능
+oddNumbers.onError(MyError.error)// 하나라도 에러라면 그 즉시 중단되고 다음 이벤트는 받지 않는다.
+evenNumbers.onNext(8)
+evenNumbers.onCompleted()
+
+//둘다 종료해야 종료된다.
 

@@ -41,7 +41,14 @@ o.scan(0, accumulator: +)
    .subscribe { print($0) }
    .disposed(by: bag)
 
-print("== reduce")
+print("\n== reduce")
 
+o.reduce(0, accumulator: +)
+    .subscribe{ print($0) }
+    .disposed(by: bag)
+
+
+//중간결과까지 모두 확인이 필요하다면 스캔 연산자
+//마지막결과값만 필요하다면 리듀스 연산자 사용
 
 
