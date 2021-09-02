@@ -31,4 +31,14 @@ let bag = DisposeBag()
 
 let subject = PublishSubject<Int>()
 
+//subject.timeout(.seconds(3), scheduler: MainScheduler.instance) //3초안에 이벤트가 전달되지 않으면 에러이벤트 발생하고 종료
+//    .subscribe{ print($0) }
+//    .disposed(by: bag)
 
+subject.timeout(.seconds(3), other: Observable.just(0), scheduler: MainScheduler.instance) //3초안에 이벤트가 전달되지 않으면 에러이벤트 발생하고 종료
+    .subscribe{ print($0) }
+    .disposed(by: bag)
+
+Observable<Int>.timer(.seconds(1), period: .seconds(5), scheduler: MainScheduler.instance)
+    .subscribe(onNext: {subject.onNext($0) })
+    .disposed(by: bag)

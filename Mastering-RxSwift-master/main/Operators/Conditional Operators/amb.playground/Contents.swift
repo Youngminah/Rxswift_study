@@ -40,7 +40,8 @@ let c = PublishSubject<String>()
 //a,b,c중에 가장 먼저 이벤트를 방출하는 것부터 방출하기 시작한다.
 
 
-a.amb(b)
+//a.amb(b)
+Observable.amb([a,b,c])
     .subscribe{ print($0) }
     .disposed(by: bag)
 
