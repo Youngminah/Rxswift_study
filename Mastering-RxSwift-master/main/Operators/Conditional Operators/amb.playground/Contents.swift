@@ -37,4 +37,15 @@ let a = PublishSubject<String>()
 let b = PublishSubject<String>()
 let c = PublishSubject<String>()
 
+//a,b,c중에 가장 먼저 이벤트를 방출하는 것부터 방출하기 시작한다.
 
+
+a.amb(b)
+    .subscribe{ print($0) }
+    .disposed(by: bag)
+
+a.onNext("A")
+b.onNext("B")
+
+b.onCompleted() // 구독자에게 전달 안됨
+a.onCompleted()
