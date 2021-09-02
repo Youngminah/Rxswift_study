@@ -35,7 +35,7 @@ let b = BehaviorSubject(value: 2)
 let subject = PublishSubject<BehaviorSubject<Int>>()
 
 subject
-   .flatMap { $0.asObservable() }
+   .flatMapFirst { $0.asObservable() }
    .subscribe { print($0) }
    .disposed(by: disposeBag)
 
@@ -46,3 +46,6 @@ a.onNext(11)
 b.onNext(22)
 b.onNext(222)
 a.onNext(111)
+
+//a에 저장된 애들만 구독자로 전달됨. 첫번째로 변환된 옵저버블이 방출하는 이벤트만 구독자로 전달한다.
+// 최신 값도 전달됨.

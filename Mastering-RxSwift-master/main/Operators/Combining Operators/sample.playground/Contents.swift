@@ -36,3 +36,16 @@ enum MyError: Error {
 let trigger = PublishSubject<Void>()
 let data = PublishSubject<String>()
 
+data.sample(trigger)
+    .subscribe{ print($0) }
+    .disposed(by: bag)
+
+trigger.onNext(())
+data.onNext("Hello") //이 때 전달안됨.
+
+trigger.onNext(())
+trigger.onNext(()) //넥스트 이벤트 방출 안됨. 동일한 이벤트를 2번이상 방출안함.
+
+data.onCompleted()
+trigger.onNext(())
+data.onError(MyError.error)

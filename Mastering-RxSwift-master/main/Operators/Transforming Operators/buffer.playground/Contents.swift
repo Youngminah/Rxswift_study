@@ -29,6 +29,15 @@ import RxSwift
 
 let disposeBag = DisposeBag()
 
+//특정주기 동안 옵저버블이 방출하는 항복을 수집하고, 하나의 값으로 리턴한다.
+//Rxswift에서는 이러한 동작을 controlled buffering이라고 한다.
+
+Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.instance)
+    .buffer(timeSpan: .seconds(5), count: 3, scheduler: MainScheduler.instance)  //최대숫자 기준.
+    .take(5)
+    .subscribe{ print($0) }
+    .disposed(by: disposeBag)
+
 
 
 
