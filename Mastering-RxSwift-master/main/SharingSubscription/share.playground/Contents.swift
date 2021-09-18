@@ -29,6 +29,8 @@ import RxSwift
 
 let bag = DisposeBag()
 let source = Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.instance).debug()
+    //.share() // 기본값 whileconnect
+    .share(replay: 5, scope: .forever) //서브젝트를 공유만될분 sequence는 새로 시작됨
 
 let observer1 = source
    .subscribe { print("🔵", $0) }
@@ -41,8 +43,9 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
    observer1.dispose()
    observer2.dispose()
 }
+// 모든 구독이 중지되면 내부에있는 커넥터블 옵저버블 역시 중지된다. 서브젝트를 공유하고있음
 
-DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
+DispatchQueue.main.asyncAfter(deadline: .now() + 7) { //서브젝트는 사라지고 새로운 서브젝트를 생성
    let observer3 = source.subscribe { print("⚫️", $0) }
 
    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
