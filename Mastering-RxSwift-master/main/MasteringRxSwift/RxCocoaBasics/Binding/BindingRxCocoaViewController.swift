@@ -24,10 +24,13 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+
+
+//ControlProperty: 데이터를 특정 UI에 바인딩할때 사용하는 특별한 옵저버블 
+
 class BindingRxCocoaViewController: UIViewController {
    
    @IBOutlet weak var valueLabel: UILabel!
-   
    @IBOutlet weak var valueField: UITextField!
    
    let disposeBag = DisposeBag()
@@ -37,7 +40,15 @@ class BindingRxCocoaViewController: UIViewController {
       
       valueLabel.text = ""
       valueField.becomeFirstResponder()
-      
+//      valueField.rx.text
+//        .subscribe(onNext: { [weak self] str in
+//            self?.valueLabel.text = str
+//        })
+//        .disposed(by: disposeBag)
+    
+    valueField.rx.text
+        .bind(to: valueLabel.rx.text)
+        .disposed(by: disposeBag)
       
       
    }
