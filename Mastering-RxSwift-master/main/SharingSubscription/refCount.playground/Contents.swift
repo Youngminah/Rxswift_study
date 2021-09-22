@@ -26,14 +26,16 @@ import RxSwift
 /*:
  # refCount
  */
+//connectableObservable에서만 사용할 수 있음.
 
 let bag = DisposeBag()
-let source = Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.instance).debug().publish()
+let source = Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.instance).debug().publish().refCount()
 
 let observer1 = source
    .subscribe { print("🔵", $0) }
-
-source.connect()
+// 첫번째 구독자가 추가되면 refCount옵저버블이 connect메소드를 호출한다.
+// connectableObservable은 subject를 통해서 모든 구독자에게 이벤트를 전달한다.
+// 더이상 구독자가 없다면 disconnect됨
 
 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
    observer1.dispose()

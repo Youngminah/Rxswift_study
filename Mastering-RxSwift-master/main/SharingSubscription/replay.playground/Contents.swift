@@ -28,8 +28,8 @@ import RxSwift
  */
 
 let bag = DisposeBag()
-let subject = PublishSubject<Int>()
-let source = Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.instance).take(5).multicast(subject)
+
+let source = Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.instance).take(5).replay(5)
 
 source
    .subscribe { print("🔵", $0) }
@@ -42,3 +42,7 @@ source
 
 source.connect()
 
+//만약 3초 이전의 값들을 가져오고 싶다면, PublishSubject-> ReplaySubject로 바꾸면됨.
+
+//replayall은 메모리 제한이 없어 특별한 이유가 없다면 사용하지 않아야함.
+//버퍼크기를 제한해줄수 있는 replay는 메모리 효율을 위해 최소한으로 정하고 사용해야한다.

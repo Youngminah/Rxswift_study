@@ -56,8 +56,9 @@ let source = Observable<Int>.create { observer in
 let trigger = PublishSubject<Void>()
 
 source
+    .retryWhen{ _ in trigger }
    .subscribe { print($0) }
    .disposed(by: bag)
 
-
-
+trigger.onNext(()) //트리거에서 넥스트 이벤트를 전달할때까지 기다리고있음.
+trigger.onNext(())

@@ -26,5 +26,22 @@ import RxSwift
 /*:
  # interval
  */
+//특정주기마다 정수를 방출하는 옵저버블이 필요할 때.
 
+let i = Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.instance)
 
+let subscription1 = i.subscribe{ print("1 >> \($0)") }
+
+DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+    subscription1.dispose()
+}
+
+var subscription2 : Disposable?
+
+DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+    subscription2 = i.subscribe{ print("2 >> \($0)") }
+}
+
+DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
+    subscription2?.dispose()
+}
