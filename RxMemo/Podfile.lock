@@ -22,10 +22,10 @@ PODS:
 DEPENDENCIES:
   - Action
   - "NSObject+Rx"
-  - RxCocoa
+  - RxCocoa (= 6.2.0)
   - RxCoreData
   - RxDataSources
-  - RxSwift
+  - RxSwift (= 6.2.0)
 
 SPEC REPOS:
   trunk:
@@ -48,6 +48,6 @@ SPEC CHECKSUMS:
   RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
 
-PODFILE CHECKSUM: 00912a96eb0dd916ce09f0fbfcea9af303dc61fc
+PODFILE CHECKSUM: 8835833f547196bef17b74ec6f6765874c859fdb
 
 COCOAPODS: 1.11.2
