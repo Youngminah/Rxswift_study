@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import RxDataSources //테이블 뷰와 컬렉션 뷰에 바인딩할수 있는 데이터 소스 제공, 반드시 identifiable 프로토콜을 채용해야함
 
-struct Memo: Equatable {
+struct Memo: Equatable, IdentifiableType {
     var content: String
     var insertDate: Date
     var identity: String
