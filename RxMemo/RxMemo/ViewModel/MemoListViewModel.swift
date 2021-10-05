@@ -5,13 +5,26 @@
 //  Created by meng on 2021/10/03.
 //
 
-import Foundation
+import UIKit
 import RxSwift
 import RxCocoa
 import Action
+import RxDataSources
+
+typealias MemoSectionModel = AnimatableSectionModel<Int, Memo>
 
 class MemoListViewModel: CommonViewModel {
-    var memoList: Observable<[Memo]> {
+    let dataSource: RxTableViewSectionedAnimatedDataSource<MemoSectionModel> = {
+        let ds = RxTableViewSectionedAnimatedDataSource<MemoSectionModel>(configureCell: { (dataSource, tableView, indexPath, memo) -> UITableViewCell in
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+            cell.textLabel?.text = memo.content
+            return cell
+        })
+        ds.canEditRowAtIndexPath = { _, _ in return true }
+        return ds
+    }()
+    
+    var memoList: Observable<[MemoSectionModel]> {
         return storage.memoList()
     }
     
@@ -38,4 +51,20 @@ class MemoListViewModel: CommonViewModel {
                 }
         }
     }
+    
+    //메소드 형태로 구현해도되는데 다양한 형태 구현을 보기 위해, 속성 형태로 구현
+    lazy var detailAction: Action<Memo, Void> = {
+        return Action { memo in
+            let detailViewModel = MemoDetailViewModel(memo: memo, title: "메모 보기", sceneCoordinator: self.sceneCoordinator, storage: self.storage)
+            
+            let detailScene = Scene.detail(detailViewModel)
+            return self.sceneCoordinator.transition(to: detailScene, using: .push, animated: true).asObservable().map { _ in }
+        }
+    }()
+    
+    lazy var deleteAction: Action<Memo, Swift.Never> = {
+        return Action { memo in
+            return self.storage.delete(memo: memo).ignoreElements()
+        }
+    }()
 }
