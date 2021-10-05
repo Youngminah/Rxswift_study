@@ -38,4 +38,14 @@ class MemoListViewModel: CommonViewModel {
                 }
         }
     }
+    
+    //메소드 형태로 구현해도되는데 다양한 형태 구현을 보기 위해, 속성 형태로 구현
+    lazy var detailAction: Action<Memo, Void> = {
+        return Action { memo in
+            let detailViewModel = MemoDetailViewModel(memo: memo, title: "메모 보기", sceneCoordinator: self.sceneCoordinator, storage: self.storage)
+            
+            let detailScene = Scene.detail(detailViewModel)
+            return self.sceneCoordinator.transition(to: detailScene, using: .push, animated: true).asObservable().map { _ in }
+        }
+    }()
 }
