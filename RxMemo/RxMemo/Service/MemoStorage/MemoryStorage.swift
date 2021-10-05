@@ -34,7 +34,7 @@ class MemoryStorage: MemoStorageType {
     }
     
     @discardableResult
-    func updateMemo(memo: Memo, content: String) -> Observable<Memo> {
+    func update(memo: Memo, content: String) -> Observable<Memo> {
         let updated = Memo(original: memo, updatedContent: content)
         if let index = list.firstIndex(where: { $0 == memo }){
             list.remove(at: index)
