@@ -16,7 +16,7 @@ protocol MemoStorageType {
     func memoList() -> Observable<[Memo]>
     
     @discardableResult
-    func updateMemo(memo: Memo, content: String) -> Observable<Memo>
+    func update(memo: Memo, content: String) -> Observable<Memo>
     
     @discardableResult 
     func delete(memo: Memo) -> Observable<Memo>
