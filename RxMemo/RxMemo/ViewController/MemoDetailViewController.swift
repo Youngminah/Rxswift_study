@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+//메모 클릭하면 자세히 보는 뷰
 class MemoDetailViewController: UIViewController, ViewModelBindableType {
 
     var viewModel: MemoDetailViewModel!
