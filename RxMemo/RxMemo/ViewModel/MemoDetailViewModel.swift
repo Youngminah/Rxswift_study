@@ -12,7 +12,8 @@ import Action
 import UIKit
 
 class MemoDetailViewModel: CommonViewModel {
-    let memo: Memo //이전씬에서 전달된 메모가 저장됨
+    
+    var memo: Memo //이전씬에서 전달된 메모가 저장됨
     
     private var formatter: DateFormatter = { //날짜를 문자열로 바꿀 때 사용된다.
         let f = DateFormatter()
@@ -41,10 +42,10 @@ class MemoDetailViewModel: CommonViewModel {
         return Action { input in
             self.storage.update(memo: memo, content: input)
                 .subscribe(onNext: { updated in
+                    self.memo = updated
                     self.contents.onNext([ updated.content,
                                            self.formatter.string(from: updated.insertDate)
                                          ])
-                    
                 })
                 .disposed(by: self.rx.disposeBag)
             return Observable.empty()

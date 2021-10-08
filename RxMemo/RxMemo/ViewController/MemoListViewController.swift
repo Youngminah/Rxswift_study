@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 import NSObject_Rx
 
+//메모 전체를 테이블뷰로 보는 뷰
 class MemoListViewController: UIViewController, ViewModelBindableType {
 
     var viewModel: MemoListViewModel!
