@@ -25,3 +25,45 @@ import RxSwift
 import RxCocoa
 import CoreLocation
 import NSObject_Rx
+
+class OpenWeatherMapApi: NSObject, WeatherApiType {
+    
+    private let summaryRelay = BehaviorRelay<WeatherDataType?>(value: nil)
+    private let forecastReplay = BehaviorRelay<[WeatherDataType]>(value: []) //UI바인딩에 활용
+    private let urlSession = URLSession.shared
+    
+    private func fetchSummary(location: CLLocation) -> Observable<WeatherDataType?> {
+        let request = composeUrlRequest(endpoint: summaryEndpoint, from: location)
+        return urlSession.rx.data(request: request)
+            .map { data -> WeatherSummary in
+                let decoder = JSONDecoder()
+                return try decoder.decode(WeatherSummary.self, from: data)
+            }
+            .map { WeatherData(summary: $0) }
+            .catchErrorJustReturn(nil)
+    }
+    
+    private func fetchForecast(location: CLLocation) -> Observable<[WeatherDataType]> {
+        let request = composeUrlRequest(endpoint: forecastEndpoint, from: location)
+        return urlSession.rx.data(request: request)
+            .map { data -> [WeatherData] in
+                let decoder = JSONDecoder()
+                let forecast = try decoder.decode(Forecast.self, from: data)
+                return forecast.list.map(WeatherData.init)
+            }
+            .catchErrorJustReturn([])
+    }
+    
+    @discardableResult
+    func fetch(location: CLLocation) -> Observable<(WeatherDataType?, [WeatherDataType])> {
+        let summary = fetchSummary(location: location)
+        let forecast = fetchForecast(location: location)
+        Observable.zip(summary, forecast)
+            .subscribe(onNext: { [weak self] result in
+                self?.summaryRelay.accept(result.0)
+                self?.forecastReplay.accept(result.1)
+            })
+            .disposed(by: rx.disposeBag)
+        return Observable.combineLatest(summaryRelay.asObservable(), forecastReplay.asObservable())
+    }
+}

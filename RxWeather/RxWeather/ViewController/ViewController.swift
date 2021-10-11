@@ -34,7 +34,12 @@ class ViewController: UIViewController, ViewModelBindableType {
    @IBOutlet weak var listTableView: UITableView!
    
    func bindViewModel() {
-      
+       viewModel.title
+           .bind(to: locationLabel.rx.text)
+           .disposed(by: rx.disposeBag)
+       viewModel.weatherData
+           .drive(listTableView.rx.items(dataSource: viewModel.dataSource))
+           .disposed(by: rx.disposeBag)
    }
    
    override func viewDidLoad() {
